@@ -33,8 +33,8 @@ const LOG_LEVELS: LogLevel[] = ["error", "warn", "info", "debug"];
 const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   onFilterChange,
-  isLoading,
   onRefresh,
+  isLoading,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(true);
 
@@ -76,7 +76,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               variant="ghost"
               size="sm"
               onClick={clearFilters}
-              disabled={isLoading}
               className="h-8 text-sm cursor-pointer"
             >
               <X className="h-4 w-4 mr-1" />
@@ -120,7 +119,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
                   value === "all" ? "" : (value as LogLevel)
                 )
               }
-              disabled={isLoading}
             >
               <SelectTrigger className="h-9 text-sm">
                 <SelectValue placeholder="All Levels" />
@@ -152,7 +150,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 value={filters.message || ""}
                 onChange={(e) => handleChange("message", e.target.value)}
                 placeholder="Search messages..."
-                disabled={isLoading}
                 className="pl-9 h-9 text-sm"
               />
             </div>
@@ -170,7 +167,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={filters.resourceId || ""}
               onChange={(e) => handleChange("resourceId", e.target.value)}
               placeholder="Filter by resource..."
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
@@ -186,7 +182,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="datetime-local"
               value={filters.timestamp_start || ""}
               onChange={(e) => handleChange("timestamp_start", e.target.value)}
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
@@ -203,7 +198,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={filters.traceId || ""}
               onChange={(e) => handleChange("traceId", e.target.value)}
               placeholder="Filter by trace ID..."
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
@@ -220,7 +214,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={filters.spanId || ""}
               onChange={(e) => handleChange("spanId", e.target.value)}
               placeholder="Filter by span ID..."
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
@@ -236,7 +229,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               type="datetime-local"
               value={filters.timestamp_end || ""}
               onChange={(e) => handleChange("timestamp_end", e.target.value)}
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
@@ -253,7 +245,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
               value={filters.commit || ""}
               onChange={(e) => handleChange("commit", e.target.value)}
               placeholder="Filter by commit..."
-              disabled={isLoading}
               className="h-9 text-sm"
             />
           </div>
