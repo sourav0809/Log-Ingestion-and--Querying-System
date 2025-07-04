@@ -34,23 +34,24 @@ export class StorageManager {
 
     return logs
       .filter((log) => {
-        if (params.level && log.level !== params.level) return false;
-        if (
-          params.message &&
-          !log.message.toLowerCase().includes(params.message.toLowerCase())
-        )
-          return false;
-        if (params.resourceId && log.resourceId !== params.resourceId)
-          return false;
-        if (params.traceId && log.traceId !== params.traceId) return false;
-        if (params.spanId && log.spanId !== params.spanId) return false;
-        if (params.commit && log.commit !== params.commit) return false;
+        const matchIncludes = (field?: string, value?: string) =>
+          !value ||
+          (field && field.toLowerCase().includes(value.toLowerCase()));
+
+        if (!matchIncludes(log.level, params.level)) return false;
+        if (!matchIncludes(log.message, params.message)) return false;
+        if (!matchIncludes(log.resourceId, params.resourceId)) return false;
+        if (!matchIncludes(log.traceId, params.traceId)) return false;
+        if (!matchIncludes(log.spanId, params.spanId)) return false;
+        if (!matchIncludes(log.commit, params.commit)) return false;
 
         const timestamp = new Date(log.timestamp).getTime();
+
         if (params.timestamp_start) {
           const startTime = new Date(params.timestamp_start).getTime();
           if (timestamp < startTime) return false;
         }
+
         if (params.timestamp_end) {
           const endTime = new Date(params.timestamp_end).getTime();
           if (timestamp > endTime) return false;

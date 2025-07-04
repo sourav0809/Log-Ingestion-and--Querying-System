@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
   // Create a debounced version of fetchLogs with proper typing
   const debouncedFetchLogs: DebouncedFunc<typeof fetchLogs> = useCallback(
-    debounce(fetchLogs, 150, {
+    debounce(fetchLogs, 700, {
       leading: false,
       trailing: true,
       maxWait: 1000,
@@ -86,9 +86,7 @@ const App: React.FC = () => {
               <Activity className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold tracking-tight">
-                Log Viewer
-              </h1>
+              <h1 className="text-xl font-semibold tracking-tight">Loglyzer</h1>
               <p className="text-sm text-muted-foreground">
                 View and filter system logs in real-time
               </p>
