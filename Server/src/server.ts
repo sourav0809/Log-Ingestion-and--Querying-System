@@ -35,6 +35,22 @@ app.use(
   }
 );
 
+// Health check
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Healthy",
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    error: "Route Not Found",
+  });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
