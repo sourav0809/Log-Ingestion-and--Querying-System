@@ -98,13 +98,24 @@ const App: React.FC = () => {
             variant="outline"
             size="icon"
             onClick={toggleDarkMode}
-            className="h-10 w-10"
+            className="h-10 w-10 relative overflow-hidden cursor-pointer"
           >
-            {isDarkMode ? (
-              <Sun className="h-5 w-5" />
-            ) : (
+            <div
+              className="absolute inset-0 flex items-center justify-center transition-transform duration-300"
+              style={{
+                transform: isDarkMode ? "translateY(-100%)" : "translateY(0)",
+              }}
+            >
               <Moon className="h-5 w-5" />
-            )}
+            </div>
+            <div
+              className="absolute inset-0 flex items-center justify-center transition-transform duration-300"
+              style={{
+                transform: isDarkMode ? "translateY(0)" : "translateY(100%)",
+              }}
+            >
+              <Sun className="h-5 w-5" />
+            </div>
             <span className="sr-only">Toggle dark mode</span>
           </Button>
         </div>
