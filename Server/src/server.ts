@@ -3,9 +3,12 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import logRoutes from "./routes/logRoutes";
+import { config } from "dotenv";
+
+config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(helmet());
