@@ -1,6 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
-import type { Log, LogLevel } from "../types/log";
+import type { Log } from "../types/log";
 import {
   Table,
   TableBody,
@@ -9,88 +9,138 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/ui/table";
-import { Card } from "@/components/common/ui/card";
 import { Badge } from "@/components/common/ui/badge";
-import { Loader2 } from "lucide-react";
+import { Card } from "@/components/common/ui/card";
+import { motion } from "framer-motion";
 
 interface LogTableProps {
   logs: Log[];
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
-const getLevelStyle = (
-  level: LogLevel
-): { variant: "default" | "destructive" | "secondary" | "outline" } => {
-  switch (level) {
+const getLevelStyle = (level: string) => {
+  switch (level.toLowerCase()) {
     case "error":
-      return { variant: "destructive" };
+      return {
+        variant: "destructive" as const,
+        className: "bg-red-500/15 text-red-500 hover:bg-red-500/25",
+      };
     case "warn":
-      return { variant: "secondary" };
+      return {
+        variant: "default" as const,
+        className: "bg-yellow-500/15 text-yellow-500 hover:bg-yellow-500/25",
+      };
     case "info":
-      return { variant: "default" };
+      return {
+        variant: "default" as const,
+        className: "bg-blue-500/15 text-blue-500 hover:bg-blue-500/25",
+      };
     case "debug":
-      return { variant: "outline" };
+      return {
+        variant: "default" as const,
+        className: "bg-purple-500/15 text-purple-500 hover:bg-purple-500/25",
+      };
+    default:
+      return {
+        variant: "secondary" as const,
+        className: "",
+      };
   }
 };
 
+const TableSkeleton = () => (
+  <TableRow>
+    {Array.from({ length: 7 }).map((_, i) => (
+      <TableCell key={i}>
+        <div className="h-6 bg-muted/10 rounded animate-pulse" />
+      </TableCell>
+    ))}
+  </TableRow>
+);
+
 const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
-  if (isLoading) {
-    return (
-      <Card className="p-8">
-        <div className="flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      </Card>
-    );
-  }
-
-  if (logs.length === 0) {
-    return (
-      <Card className="p-8">
-        <div className="text-center text-muted-foreground">
-          No logs found. Try adjusting your filters.
-        </div>
-      </Card>
-    );
-  }
-
   return (
-    <Card>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-24">Level</TableHead>
-            <TableHead>Message</TableHead>
-            <TableHead>Resource ID</TableHead>
-            <TableHead>Timestamp</TableHead>
-            <TableHead>Trace ID</TableHead>
-            <TableHead>Span ID</TableHead>
-            <TableHead>Commit</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <></>
-          {logs.map((log, index) => (
-            <TableRow key={`${log.traceId}-${index}`}>
-              <TableCell>
-                <Badge {...getLevelStyle(log.level)}>{log.level}</Badge>
-              </TableCell>
-              <TableCell className="font-medium max-w-md truncate">
-                {log.message}
-              </TableCell>
-              <TableCell className="font-mono text-xs">
-                {log.resourceId}
-              </TableCell>
-              <TableCell>
-                {format(new Date(log.timestamp), "yyyy-MM-dd HH:mm:ss")}
-              </TableCell>
-              <TableCell className="font-mono text-xs">{log.traceId}</TableCell>
-              <TableCell className="font-mono text-xs">{log.spanId}</TableCell>
-              <TableCell className="font-mono text-xs">{log.commit}</TableCell>
+    <Card className="overflow-hidden border rounded-lg">
+      <div className="relative">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="w-24 text-xs">Level</TableHead>
+              <TableHead className="text-xs">Message</TableHead>
+              <TableHead className="text-xs">Resource ID</TableHead>
+              <TableHead className="text-xs">Timestamp</TableHead>
+              <TableHead className="text-xs">Trace ID</TableHead>
+              <TableHead className="text-xs">Span ID</TableHead>
+              <TableHead className="text-xs">Commit</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <TableSkeleton key={index} />
+                ))}
+              </>
+            ) : logs.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="h-24 text-center">
+                  <div className="flex flex-col items-center justify-center text-sm text-muted-foreground">
+                    <p>No logs found.</p>
+                    <p className="text-xs">Try adjusting your filters.</p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              logs.map((log, index) => (
+                <motion.tr
+                  key={`${log.traceId}-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, delay: index * 0.05 }}
+                  className="border-b transition-colors hover:bg-muted/50"
+                >
+                  <TableCell className="font-medium py-3">
+                    <Badge
+                      {...getLevelStyle(log.level)}
+                      className="text-[10px] font-medium"
+                    >
+                      {log.level.toUpperCase()}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="max-w-md truncate py-3">
+                    <span className="text-xs">{log.message}</span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {log.resourceId}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-[10px]">
+                      {format(new Date(log.timestamp), "MMM dd, HH:mm:ss")}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {log.traceId}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {log.spanId}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      {log.commit}
+                    </span>
+                  </TableCell>
+                </motion.tr>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </Card>
   );
 };

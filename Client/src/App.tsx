@@ -6,7 +6,7 @@ import LogTable from "./components/LogTable";
 import { LogService } from "./api/agent";
 import type { Log, LogQueryParams } from "./types/log";
 import { Toaster } from "react-hot-toast";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Activity } from "lucide-react";
 import { Button } from "@/components/common/ui/button";
 
 const App: React.FC = () => {
@@ -33,13 +33,14 @@ const App: React.FC = () => {
   // Create a debounced version of fetchLogs with proper typing
   const debouncedFetchLogs: DebouncedFunc<typeof fetchLogs> = useCallback(
     debounce(fetchLogs, 150, {
-      leading: false, // Don't execute on the leading edge
-      trailing: true, // Execute on the trailing edge
-      maxWait: 1000, // Maximum time to wait before executing
+      leading: false,
+      trailing: true,
+      maxWait: 1000,
     }),
     [fetchLogs]
   );
 
+  // Effect to trigger debounced fetch when filters change
   useEffect(() => {
     debouncedFetchLogs(filters);
     return () => {
@@ -52,6 +53,7 @@ const App: React.FC = () => {
       "(prefers-color-scheme: dark)"
     ).matches;
     setIsDarkMode(prefersDark);
+
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
     mediaQuery.addEventListener("change", handleChange);
@@ -67,43 +69,57 @@ const App: React.FC = () => {
     setFilters(newFilters);
   };
 
+  const handleRefresh = () => {
+    fetchLogs(filters);
+  };
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-[90rem] mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
+      <div className="max-w-[90rem] mx-auto p-4 sm:p-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Activity className="h-6 w-6 text-primary" />
+            </div>
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Log Viewer</h1>
-              <p className="text-sm text-muted-foreground mt-2">
+              <h1 className="text-xl font-semibold tracking-tight">
+                Log Viewer
+              </h1>
+              <p className="text-sm text-muted-foreground">
                 View and filter system logs in real-time
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleDarkMode}
-              className="h-10 w-10"
-            >
-              {isDarkMode ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-              <span className="sr-only">Toggle dark mode</span>
-            </Button>
           </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={toggleDarkMode}
+            className="h-10 w-10"
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+            <span className="sr-only">Toggle dark mode</span>
+          </Button>
+        </div>
 
+        <div className="space-y-4">
           <FilterBar
             filters={filters}
             onFilterChange={handleFilterChange}
             isLoading={loading}
+            onRefresh={handleRefresh}
           />
 
-          <LogTable logs={logs} isLoading={loading} />
+          <div className="rounded-lg">
+            <LogTable logs={logs} isLoading={loading} />
+          </div>
         </div>
       </div>
       <Toaster />
