@@ -23,7 +23,7 @@ const getLevelStyle = (level: string) => {
     case "error":
       return {
         variant: "destructive" as const,
-        className: "bg-red-500/15 text-red-500 hover:bg-red-500/25",
+        className: "bg-red-500/15 text-red-500 hover:bg-red-500/25 text-white",
       };
     case "warn":
       return {
@@ -61,7 +61,7 @@ const TableSkeleton = () => (
 const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
   return (
     <Card className="overflow-hidden border rounded-lg">
-      <div className="relative overflow-y-hidden">
+      <div className="relative">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent ">
@@ -94,10 +94,10 @@ const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
               logs.map((log, index) => (
                 <motion.tr
                   key={`${log.traceId}-${index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2, delay: index * 0.05 }}
-                  className="border-b transition-colors hover:bg-muted/50 overflow-y-hidden"
+                  // initial={{ opacity: 0, y: 20 }}
+                  // animate={{ opacity: 1, y: 0 }}
+                  // transition={{ duration: 0.2, delay: index * 0.05 }}
+                  className="border-b transition-colors hover:bg-muted/50"
                 >
                   <TableCell className="font-medium py-3">
                     <Badge
