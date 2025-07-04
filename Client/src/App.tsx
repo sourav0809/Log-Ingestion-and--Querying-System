@@ -12,7 +12,7 @@ import { Button } from "@/components/common/ui/button";
 const App: React.FC = () => {
   const [logs, setLogs] = useState<Log[]>([]);
   const [filters, setFilters] = useState<LogQueryParams>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Create a memoized fetch function
@@ -79,7 +79,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-[90rem] mx-auto p-4 sm:p-6 space-y-6">
+      <div className="max-w-[100rem] mx-auto p-4 sm:p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">

@@ -61,17 +61,17 @@ const TableSkeleton = () => (
 const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
   return (
     <Card className="overflow-hidden border rounded-lg">
-      <div className="relative">
+      <div className="relative overflow-y-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="w-24 text-xs">Level</TableHead>
-              <TableHead className="text-xs">Message</TableHead>
-              <TableHead className="text-xs">Resource ID</TableHead>
-              <TableHead className="text-xs">Timestamp</TableHead>
-              <TableHead className="text-xs">Trace ID</TableHead>
-              <TableHead className="text-xs">Span ID</TableHead>
-              <TableHead className="text-xs">Commit</TableHead>
+            <TableRow className="hover:bg-transparent ">
+              <TableHead className="w-24 text-sm">Level</TableHead>
+              <TableHead className="text-sm">Message</TableHead>
+              <TableHead className="text-sm">Resource ID</TableHead>
+              <TableHead className="text-sm">Timestamp</TableHead>
+              <TableHead className="text-sm">Trace ID</TableHead>
+              <TableHead className="text-sm">Span ID</TableHead>
+              <TableHead className="text-sm">Commit</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -84,9 +84,9 @@ const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
             ) : logs.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="h-24 text-center">
-                  <div className="flex flex-col items-center justify-center text-sm text-muted-foreground">
+                  <div className="flex flex-col items-center justify-center text-2xl text-muted-foreground p-10 gap-1">
                     <p>No logs found.</p>
-                    <p className="text-xs">Try adjusting your filters.</p>
+                    <p className="text-lg">Try adjusting your filters.</p>
                   </div>
                 </TableCell>
               </TableRow>
@@ -97,41 +97,41 @@ const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
-                  className="border-b transition-colors hover:bg-muted/50"
+                  className="border-b transition-colors hover:bg-muted/50 overflow-y-hidden"
                 >
                   <TableCell className="font-medium py-3">
                     <Badge
                       {...getLevelStyle(log.level)}
-                      className="text-[10px] font-medium"
+                      className="text-xs font-medium"
                     >
                       {log.level.toUpperCase()}
                     </Badge>
                   </TableCell>
                   <TableCell className="max-w-md truncate py-3">
-                    <span className="text-xs">{log.message}</span>
+                    <span className="text-sm">{log.message}</span>
                   </TableCell>
                   <TableCell className="py-3">
-                    <span className="text-[10px] font-mono text-muted-foreground">
+                    <span className="text-sm font-mono text-muted-foreground">
                       {log.resourceId}
                     </span>
                   </TableCell>
                   <TableCell className="py-3">
-                    <span className="text-[10px]">
+                    <span className="text-sm">
                       {format(new Date(log.timestamp), "MMM dd, HH:mm:ss")}
                     </span>
                   </TableCell>
                   <TableCell className="py-3">
-                    <span className="text-[10px] font-mono text-muted-foreground">
+                    <span className="text-sm font-mono text-muted-foreground">
                       {log.traceId}
                     </span>
                   </TableCell>
                   <TableCell className="py-3">
-                    <span className="text-[10px] font-mono text-muted-foreground">
+                    <span className="text-sm font-mono text-muted-foreground">
                       {log.spanId}
                     </span>
                   </TableCell>
                   <TableCell className="py-3">
-                    <span className="text-[10px] font-mono text-muted-foreground">
+                    <span className="text-sm font-mono text-muted-foreground">
                       {log.commit}
                     </span>
                   </TableCell>

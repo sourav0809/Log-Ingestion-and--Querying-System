@@ -61,15 +61,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="h-8 w-8"
+              className="h-8 w-8 cursor-pointer"
             >
               {isExpanded ? (
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-5 w-5" />
               ) : (
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-5 w-5" />
               )}
             </Button>
-            <h2 className="text-sm font-medium">Log Filters</h2>
+            <h2 className="text-xl font-medium">Log Filters</h2>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -77,7 +77,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               size="sm"
               onClick={clearFilters}
               disabled={isLoading}
-              className="h-8 text-xs"
+              className="h-8 text-sm cursor-pointer"
             >
               <X className="h-4 w-4 mr-1" />
               Clear
@@ -87,7 +87,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               size="sm"
               onClick={onRefresh}
               disabled={isLoading}
-              className="h-8 text-xs"
+              className="h-8 text-sm cursor-pointer"
             >
               <RefreshCw
                 className={`h-4 w-4 mr-1 ${isLoading ? "animate-spin" : ""}`}
@@ -107,10 +107,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Settings2 className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Settings2 className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Log Level</span>
+              <span className="text-sm font-medium">Log Level</span>
             </div>
             <Select
               value={filters.level || "all"}
@@ -122,15 +122,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
               }
               disabled={isLoading}
             >
-              <SelectTrigger className="h-9 text-xs">
+              <SelectTrigger className="h-9 text-sm">
                 <SelectValue placeholder="All Levels" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all" className="text-xs">
+                <SelectItem value="all" className="text-sm">
                   All Levels
                 </SelectItem>
                 {LOG_LEVELS.map((level) => (
-                  <SelectItem key={level} value={level} className="text-xs">
+                  <SelectItem key={level} value={level} className="text-sm">
                     {level.charAt(0).toUpperCase() + level.slice(1)}
                   </SelectItem>
                 ))}
@@ -140,10 +140,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Search className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Message</span>
+              <span className="text-sm font-medium">Message</span>
             </div>
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground/50" />
@@ -153,17 +153,17 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 onChange={(e) => handleChange("message", e.target.value)}
                 placeholder="Search messages..."
                 disabled={isLoading}
-                className="pl-9 h-9 text-xs"
+                className="pl-9 h-9 text-sm"
               />
             </div>
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Search className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Resource ID</span>
+              <span className="text-sm font-medium">Resource ID</span>
             </div>
             <Input
               type="text"
@@ -171,32 +171,32 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onChange={(e) => handleChange("resourceId", e.target.value)}
               placeholder="Filter by resource..."
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Calendar className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Calendar className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Start Date</span>
+              <span className="text-sm font-medium">Start Date</span>
             </div>
             <Input
               type="datetime-local"
               value={filters.timestamp_start || ""}
               onChange={(e) => handleChange("timestamp_start", e.target.value)}
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Search className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Trace ID</span>
+              <span className="text-sm font-medium">Trace ID</span>
             </div>
             <Input
               type="text"
@@ -204,16 +204,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onChange={(e) => handleChange("traceId", e.target.value)}
               placeholder="Filter by trace ID..."
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Search className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Span ID</span>
+              <span className="text-sm font-medium">Span ID</span>
             </div>
             <Input
               type="text"
@@ -221,32 +221,32 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onChange={(e) => handleChange("spanId", e.target.value)}
               placeholder="Filter by span ID..."
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Calendar className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Calendar className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">End Date</span>
+              <span className="text-sm font-medium">End Date</span>
             </div>
             <Input
               type="datetime-local"
               value={filters.timestamp_end || ""}
               onChange={(e) => handleChange("timestamp_end", e.target.value)}
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center">
-                <Search className="h-3 w-3 text-primary" />
+              <div className="size-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Search className="size-3.5 text-primary" />
               </div>
-              <span className="text-xs font-medium">Commit</span>
+              <span className="text-sm font-medium">Commit</span>
             </div>
             <Input
               type="text"
@@ -254,7 +254,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               onChange={(e) => handleChange("commit", e.target.value)}
               placeholder="Filter by commit..."
               disabled={isLoading}
-              className="h-9 text-xs"
+              className="h-9 text-sm"
             />
           </div>
         </div>
