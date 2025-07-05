@@ -3,18 +3,29 @@ name: LogLyzer Production Build
 on:
   push:
     branches: [main, master]
-    paths:
-      - "Client/**" # Only trigger if files in Client/ change
-      - "Server/**" # Only trigger if files in Server/ change
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      client-changed: ${{ steps.filter.outputs.client }}
+      server-changed: ${{ steps.filter.outputs.server }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            client:
+              - 'Client/**'
+            server:
+              - 'Server/**'
+
   client-build:
     name: Client Build & Test
+    needs: check-changes
     runs-on: [self-hosted, main]
-    # Only run if Client files were changed
-    if: |
-      contains(github.event.head_commit.modified, 'Client/') ||
-      contains(github.event.head_commit.added, 'Client/')
+    if: needs.check-changes.outputs.client-changed == 'true'
 
     steps:
       - uses: actions/checkout@v4
@@ -46,11 +57,9 @@ jobs:
 
   server-build:
     name: Server Build & Test
+    needs: check-changes
     runs-on: [self-hosted, main]
-    # Only run if Server files were changed
-    if: |
-      contains(github.event.head_commit.modified, 'Server/') ||
-      contains(github.event.head_commit.added, 'Server/')
+    if: needs.check-changes.outputs.server-changed == 'true'
 
     steps:
       - uses: actions/checkout@v4
