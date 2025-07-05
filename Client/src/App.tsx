@@ -6,7 +6,7 @@ import { Moon, Sun, Activity } from "lucide-react";
 import { Button } from "@/components/common/ui/button";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useLogs } from "./hooks/useLogs";
-import AllLogs from "./components/logs/AllLogs.tsx";
+import AllLogs from "@/components/logs/AllLogs";
 
 const App: React.FC = () => {
   const { logs, filters, setFilters, loading, refresh } = useLogs();
