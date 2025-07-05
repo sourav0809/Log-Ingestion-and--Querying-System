@@ -1,12 +1,11 @@
 import React from "react";
-
-import FilterBar from "./components/filters/FilterBar";
-import type { LogQueryParams } from "./types/log";
 import { Moon, Sun, Activity } from "lucide-react";
-import { Button } from "@/components/common/ui/button";
+import FilterBar from "./components/filters/FilterBar";
+import { Button } from "./components/common/ui/button";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useLogs } from "./hooks/useLogs";
-import AllLogs from "@/components/logs/AllLogs";
+import AllLogs from "./components/logs/AllLogs";
+import type { LogQueryParams } from "./types/log";
 
 const App: React.FC = () => {
   const { logs, filters, setFilters, loading, refresh } = useLogs();
