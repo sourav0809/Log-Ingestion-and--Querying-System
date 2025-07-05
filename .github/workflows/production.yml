@@ -11,6 +11,10 @@ jobs:
   client-build:
     name: Client Build & Test
     runs-on: [self-hosted, main]
+    # Only run if Client files were changed
+    if: |
+      contains(github.event.head_commit.modified, 'Client/') ||
+      contains(github.event.head_commit.added, 'Client/')
 
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +22,7 @@ jobs:
       - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x" # Recommended LTS version
+          node-version: "20.x"
           cache: "npm"
           cache-dependency-path: Client/package-lock.json
 
@@ -43,6 +47,10 @@ jobs:
   server-build:
     name: Server Build & Test
     runs-on: [self-hosted, main]
+    # Only run if Server files were changed
+    if: |
+      contains(github.event.head_commit.modified, 'Server/') ||
+      contains(github.event.head_commit.added, 'Server/')
 
     steps:
       - uses: actions/checkout@v4
