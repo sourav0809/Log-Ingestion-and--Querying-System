@@ -2,14 +2,16 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-// import morgan from "morgan";
 import logRoutes from "./routes/logRoutes";
 import { config } from "dotenv";
+import { notFound } from "./middleware/common.middleware";
+import { errorHandler } from "./middleware/error.middleware";
+import { envConfig } from "./config/envConfig";
 
 config();
 
 const app = express();
-const PORT = process.env.PORT || 8001;
+const PORT = envConfig.port;
 
 // Middleware
 
@@ -30,21 +32,8 @@ app.get("/health", (req, res) => {
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: "Route Not Found",
-  });
-});
-
-// Error handling
-app.use((err: Error, req: express.Request, res: express.Response) => {
-  res.status(500).json({
-    success: false,
-    error: "Internal Server Error",
-  });
-});
+app.use(notFound);
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {

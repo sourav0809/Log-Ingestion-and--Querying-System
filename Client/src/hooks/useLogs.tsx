@@ -16,7 +16,7 @@ export function useLogs() {
     setLoading(true);
     try {
       const response = await logAgent.Logs.getAllLogs(currentFilters);
-      if (response.success && response.data) {
+      if (response.data) {
         setLogs(response.data);
       }
     } catch (error) {

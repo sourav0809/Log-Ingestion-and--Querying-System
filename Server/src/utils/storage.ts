@@ -13,8 +13,6 @@ export class StorageManager {
     }
   }
 
-  
-
   static async readLogs(): Promise<Log[]> {
     await this.ensureFile();
     const data = await fs.readFile(LOGS_FILE, "utf-8");

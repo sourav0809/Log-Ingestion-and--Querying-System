@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { LogController } from "../controllers/logController";
+import { getLogs, createLog } from "../controllers/logController";
 
 const router = Router();
 
-router.post("/create", LogController.createLog);
-router.get("/get", LogController.getLogs);
+router.get("/get", getLogs);
+router.post("/create", createLog);
 
 export default router;
