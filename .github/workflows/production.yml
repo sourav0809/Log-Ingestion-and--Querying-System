@@ -34,6 +34,12 @@ jobs:
         working-directory: ./Client
         run: npm run build
 
+      - name: Deploy Client to NGINX
+        working-directory: ./Client
+        run: |
+          sudo rm -rf /var/www/client/*
+          sudo cp -r dist/* /var/www/client
+
   server-build:
     name: Server Build & Test
     runs-on: [self-hosted, main]
