@@ -1,51 +1,83 @@
-# Log Ingestion and Querying System
+# Loglyzer - Log Ingestion and Querying System
 
-A modern full-stack application for ingesting and querying logs with real-time filtering capabilities.
+A modern, full-stack application for ingesting and querying system logs with real-time filtering capabilities.
 
-## 🚀 Features
+## Live Demo
 
-- **Backend**
+- Frontend: [https://loglyzer.devsourav.online](https://loglyzer.devsourav.online)
+- API: [https://loglyzerapi.devsourav.online/api](https://loglyzerapi.devsourav.online/api)
 
-  - RESTful API with TypeScript and Express
-  - File-based JSON storage
-  - Advanced filtering and search capabilities
-  - Proper error handling and validation
+## Overview
 
-- **Frontend**
-  - Modern React with TypeScript
-  - Real-time filtering
-  - Responsive design with Tailwind CSS
-  - Clean and intuitive UI
+Loglyzer is a robust log management system that allows you to:
 
-## 🛠️ Tech Stack
+- Ingest logs with structured data
+- Query logs with multiple filter criteria
+- View logs in a beautiful, responsive UI
+- Filter logs by level, message, resource ID, and more
+
+## Deployment
+
+The application is deployed on AWS with a robust CI/CD pipeline:
+
+### Infrastructure
+
+- Frontend: AWS S3 + CloudFront
+- Backend: AWS EC2
+- Domain & SSL: Route 53 + ACM
+- CI/CD: GitHub Actions
+
+### Continuous Integration/Deployment
+
+The project uses GitHub Actions for automated deployment:
+
+- Automatic builds on push to main branch
+- Separate workflows for frontend and backend
+- Automated testing before deployment
+- Zero-downtime deployment strategy
+
+## Tech Stack
 
 ### Backend
 
-- Node.js
+- Node.js + Express
 - TypeScript
-- Express
-- File system-based storage
+- Joi (validation)
+- Winston (logging)
+- Express Validator
+- File-based storage with JSON
+- PM2 for process management
 
 ### Frontend
 
-- React
+- React 19
 - TypeScript
-- Tailwind CSS
+- Vite
+- TailwindCSS
+- Radix UI Components
 - Axios
 
-## 📦 Project Setup
+### DevOps
+
+- AWS (EC2, S3, CloudFront, Route 53)
+- GitHub Actions
+- Docker
+- Nginx
+
+## Setup Instructions
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
+- Node.js (v18)
 - npm or yarn
+- Git
 
 ### Backend Setup
 
-1. Navigate to the backend directory:
+1. Navigate to the server directory:
 
    ```bash
-   cd backend
+   cd Server
    ```
 
 2. Install dependencies:
@@ -54,19 +86,24 @@ A modern full-stack application for ingesting and querying logs with real-time f
    npm install
    ```
 
-3. Start the development server:
-   ```bash
-   npm run dev
+3. Create a `.env` file with the following variables:
+
+   ```env
+   PORT=3000
+   NODE_ENV=development
    ```
 
-The backend server will start on `http://localhost:3001`
+4. Build the project:
+   ```bash
+   npm run build
+   ```
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
+1. Navigate to the client directory:
 
    ```bash
-   cd frontend
+   cd Client
    ```
 
 2. Install dependencies:
@@ -75,57 +112,216 @@ The backend server will start on `http://localhost:3001`
    npm install
    ```
 
-3. Start the development server:
+3. Build the project:
    ```bash
-   npm run dev
+   npm run build
    ```
 
-The frontend application will be available at `http://localhost:5173`
+## Running the Application
 
-## 🔍 API Endpoints
+### Backend
+
+Development mode:
+
+```bash
+cd Server
+npm run dev
+```
+
+Production mode:
+
+```bash
+cd Server
+npm run start:prod
+```
+
+### Frontend
+
+Development mode:
+
+```bash
+cd Client
+npm run dev
+```
+
+Production mode:
+
+```bash
+cd Client
+npm run preview
+```
+
+## API Reference
 
 ### POST /logs
 
-- Ingests a single log entry
-- Requires a JSON body matching the Log interface
-- Returns 201 on success
+Ingest a new log entry.
 
-### GET /logs
+#### Request Body
 
-- Retrieves logs with optional filters
-- Query Parameters:
-  - level: Log level filter
-  - message: Case-insensitive text search
-  - resourceId: Resource identifier
-  - timestamp_start: Start date (ISO format)
-  - timestamp_end: End date (ISO format)
-  - traceId: Trace identifier
-  - spanId: Span identifier
-  - commit: Commit hash
-
-## 📝 Log Schema
-
-```typescript
-interface Log {
-  level: "error" | "warn" | "info" | "debug";
-  message: string;
-  resourceId: string;
-  timestamp: string; // ISO 8601
-  traceId: string;
-  spanId: string;
-  commit: string;
-  metadata: Record<string, any>;
+```json
+{
+  "level": "error" | "warn" | "info" | "debug",
+  "message": "string",
+  "resourceId": "string",
+  "timestamp": "ISO-8601 date string",
+  "traceId": "string",
+  "spanId": "string",
+  "commit": "string",
+  "metadata": {
+    [key: string]: any
+  }
 }
 ```
 
-## 🤝 Contributing
+#### Response
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+```json
+{
+  "success": true,
+  "message": "Log created successfully",
+  "data": {
+    // Log entry data
+  }
+}
+```
 
-## 📄 License
+### GET /logs
 
-This project is licensed under the MIT License.
+Query logs with filters.
+
+#### Query Parameters
+
+- `level`: Log level filter
+- `message`: Search in log messages
+- `resourceId`: Filter by resource ID
+- `timestamp_start`: Start date (ISO-8601)
+- `timestamp_end`: End date (ISO-8601)
+- `traceId`: Filter by trace ID
+- `spanId`: Filter by span ID
+- `commit`: Filter by commit hash
+
+#### Response
+
+```json
+{
+  "success": true,
+  "message": "Logs fetched successfully",
+  "data": [
+    // Array of log entries
+  ]
+}
+```
+
+## Design Decisions and Trade-offs
+
+1. **Storage Solution**
+
+   - Currently using file-based JSON storage for simplicity
+   - Trade-off: Not suitable for high-volume production use
+   - Future improvement: Implement database storage
+
+2. **Frontend Architecture**
+
+   - Component-based structure with shared UI components
+   - Custom hooks for data fetching and state management
+   - Responsive design with TailwindCSS
+
+3. **API Design**
+   - RESTful endpoints with consistent response format
+   - Comprehensive validation using Joi
+   - Error handling middleware
+
+## Features
+
+- [x] Log ingestion with validation
+- [x] Multi-criteria log querying
+- [x] Real-time log viewing
+- [x] Beautiful UI with dark mode support
+- [x] Responsive design
+- [x] Type-safe implementation
+- [x] Error handling and validation
+- [x] Production-ready build setup
+
+## Development
+
+The project uses TypeScript for both frontend and backend to ensure type safety and better developer experience. ESLint is configured for code quality, and the project includes pre-commit hooks for maintaining code quality.
+
+### Code Structure
+
+```
+├── Client/                 # Frontend React application
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── hooks/        # Custom React hooks
+│   │   ├── types/        # TypeScript types
+│   │   └── utils/        # Utility functions
+│
+└── Server/                # Backend Node.js application
+    ├── src/
+    │   ├── controllers/  # Request handlers
+    │   ├── middleware/   # Express middleware
+    │   ├── services/     # Business logic
+    │   ├── types/        # TypeScript types
+    │   ├── utils/        # Utility functions
+    │   └── validation/   # Request validation
+```
+
+## Environment Setup
+
+### Backend Environment Variables
+
+```env
+PORT=3000
+NODE_ENV=production
+API_URL=https://loglyzerapi.devsourav.online/api
+CORS_ORIGIN=https://loglyzer.devsourav.online
+```
+
+### Frontend Environment Variables
+
+```env
+VITE_API_URL=https://loglyzerapi.devsourav.online/api
+```
+
+## CI/CD Workflow
+
+The project uses GitHub Actions for automated deployment:
+
+### Frontend Deployment
+
+```yaml
+name: Frontend Deployment
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Client/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - Build React application
+      - Upload to S3
+      - Invalidate CloudFront cache
+```
+
+### Backend Deployment
+
+```yaml
+name: Backend Deployment
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Server/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - Build Node.js application
+      - Deploy to EC2
+      - Restart PM2 process
+```
