@@ -14,11 +14,8 @@ const app = express();
 const PORT = envConfig.port;
 
 // Middleware
-
 app.use(helmet());
 app.use(cors());
-
-// app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
@@ -32,6 +29,7 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
