@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
   error?: string;
 }
 
-const API_URL = "http://localhost:8001/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const api = axios.create({
   baseURL: API_URL,
