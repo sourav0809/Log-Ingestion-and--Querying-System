@@ -4,7 +4,7 @@ import FilterBar from "./components/filters/FilterBar";
 import { Button } from "./components/common/ui/button";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useLogs } from "./hooks/useLogs";
-import AllLogs from "./components/logs/AllLogs";
+import LogTable from "./components/logs/LogTable";
 import type { LogQueryParams } from "./types/log";
 
 const App: React.FC = () => {
@@ -65,7 +65,7 @@ const App: React.FC = () => {
           />
 
           <div className="rounded-lg">
-            <AllLogs logs={logs} isLoading={loading} />
+            <LogTable logs={logs} isLoading={loading} />
           </div>
         </div>
       </div>
