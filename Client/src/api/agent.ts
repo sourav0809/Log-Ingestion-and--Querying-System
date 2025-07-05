@@ -41,8 +41,7 @@ const requests = {
 };
 
 const Logs = {
-  createLogs: (log: Log) =>
-    requests.post<ApiResponse<Log>, Log>("/logs/create", log),
+  createLogs: (log: Log) => requests.post<ApiResponse<Log>, Log>("/logs", log),
 
   getAllLogs: (params: LogQueryParams) => {
     const cleanedParams = Object.entries(params).reduce((acc, [key, val]) => {
@@ -50,7 +49,7 @@ const Logs = {
       return acc;
     }, {} as Record<string, string>);
 
-    return requests.get<ApiResponse<Log[]>>("/logs/get", cleanedParams);
+    return requests.get<ApiResponse<Log[]>>("/logs", cleanedParams);
   },
 };
 

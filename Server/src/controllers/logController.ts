@@ -1,18 +1,17 @@
 import { Request, Response } from "express";
-import { LogSchema, LogQueryParams } from "../types/log";
+import { LogQueryParams } from "../types/log";
 import catchAsync from "../utils/catchAsync";
 import { response } from "../utils/response";
 import httpStatus from "http-status";
 import { logService } from "../services/logService";
 
-const createLog = catchAsync(async (req: Request, res: Response) => {
-  const validatedLog = LogSchema.parse(req.body);
-  await logService.addLog(validatedLog);
+const createLogs = catchAsync(async (req: Request, res: Response) => {
+  await logService.addLog(req.body);
   return response(
     res,
     httpStatus.CREATED,
     "Log created successfully",
-    validatedLog
+    req.body
   );
 });
 
@@ -33,6 +32,6 @@ const getLogs = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const logController = {
-  createLog,
+  createLogs,
   getLogs,
 };
