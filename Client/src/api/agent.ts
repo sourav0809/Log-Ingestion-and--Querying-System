@@ -18,6 +18,7 @@ const api = axios.create({
 });
 
 // Add response interceptor for error handling
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
