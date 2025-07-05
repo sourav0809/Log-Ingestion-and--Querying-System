@@ -16,12 +16,15 @@ Loglyzer is a robust log management system that allows you to:
 - View logs in a beautiful, responsive UI
 - Filter logs by level, message, resource ID, and more
 
-## Deployment
-The application is deployed on AWS with Github CI/CD
+## Features
 
-- Automatic builds on push to master branch
-- Separate workflows for frontend and backend
-
+- [x] Log ingestion with validation
+- [x] Multi-criteria log querying
+- [x] Beautiful UI with dark mode support
+- [x] Responsive design
+- [x] Type-safe implementation
+- [x] Error handling and validation
+- [x] Production-ready build setup
 
 ## Tech Stack
 
@@ -44,93 +47,42 @@ The application is deployed on AWS with Github CI/CD
 - Radix UI Components
 - Axios
 
-
-## Setup Instructions
+## Project Setup
 
 ### Prerequisites
 
 - Node.js (v18)
-- npm 
+- npm
 - Git
 
-### Backend Setup
+### Environment Variables
 
-1. Navigate to the server directory:
+#### Backend (.env)
 
+```env
+PORT=8001
+NODE_ENV=production
+```
+
+#### Frontend (.env)
+
+```env
+VITE_API_URL="http://localhost:8001/api"
+```
+
+### Installation
+
+1. Clone the repository
+2. Setup Backend:
    ```bash
    cd Server
-   ```
-
-2. Install dependencies:
-
-   ```bash
    npm install
    ```
-
-3. Create a `.env` file with the following variables:
-
-   ```env
-   PORT=3000
-   NODE_ENV=development
-   ```
-
-4. Build the project:
-   ```bash
-   npm run build
-   ```
-
-### Frontend Setup
-
-1. Navigate to the client directory:
-
+3. Setup Frontend:
    ```bash
    cd Client
-   ```
-
-2. Install dependencies:
-
-   ```bash
    npm install
    ```
-
-3. Build the project:
-   ```bash
-   npm run build
-   ```
-
-## Running the Application
-
-### Backend
-
-Development mode:
-
-```bash
-cd Server
-npm run dev
-```
-
-Production mode:
-
-```bash
-cd Server
-npm run start:prod
-```
-
-### Frontend
-
-Development mode:
-
-```bash
-cd Client
-npm run dev
-```
-
-Production mode:
-
-```bash
-cd Client
-npm run preview
-```
 
 ## API Reference
 
@@ -194,40 +146,9 @@ Query logs with filters.
 }
 ```
 
-## Design Decisions and Trade-offs
+## Architecture and Design
 
-1. **Storage Solution**
-   
-   - Currently using file-based JSON storage for simplicity
-   - Trade-off: Not suitable for high-volume production use
-   - Future improvement: Implement database storage
-
-3. **Frontend Architecture**
-
-   - Component-based structure with shared UI components
-   - Custom hooks for data fetching and state management
-   - Responsive design with TailwindCSS
-
-4. **API Design**
-   - RESTful endpoints with consistent response format
-   - Comprehensive validation using Joi
-   - Error handling middleware
-
-## Features
-
-- [x] Log ingestion with validation
-- [x] Multi-criteria log querying
-- [x] Beautiful UI with dark mode support
-- [x] Responsive design
-- [x] Type-safe implementation
-- [x] Error handling and validation
-- [x] Production-ready build setup
-
-## Development
-
-The project uses TypeScript for both frontend and backend to ensure type safety and better developer experience. ESLint is configured for code quality, and the project includes pre-commit hooks for maintaining code quality.
-
-### Code Structure
+### Project Structure
 
 ```
 ├── Client/                 # Frontend React application
@@ -247,18 +168,28 @@ The project uses TypeScript for both frontend and backend to ensure type safety 
     │   └── validation/   # Request validation
 ```
 
-## Environment Setup
+### Design Decisions and Trade-offs
 
-### Backend Environment Variables
+1. **Storage Solution**
 
-```env
-PORT=8001
-NODE_ENV=production
-```
+   - Currently using file-based JSON storage for simplicity
+   - Trade-off: Not suitable for high-volume production use
+   - Future improvement: Implement database storage
 
-### Frontend Environment Variables
+2. **Frontend Architecture**
 
-```env
-VITE_API_URL="http://localhost:8001/api"
-```
+   - Component-based structure with shared UI components
+   - Custom hooks for data fetching and state management
+   - Responsive design with TailwindCSS
 
+3. **API Design**
+   - RESTful endpoints with consistent response format
+   - Comprehensive validation using Joi
+   - Error handling middleware
+
+## Deployment
+
+The application is deployed on AWS with Github CI/CD
+
+- Automatic builds on push to master branch
+- Separate workflows for frontend and backend
