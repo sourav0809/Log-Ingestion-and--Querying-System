@@ -17,24 +17,11 @@ Loglyzer is a robust log management system that allows you to:
 - Filter logs by level, message, resource ID, and more
 
 ## Deployment
+The application is deployed on AWS with Github CI/CD
 
-The application is deployed on AWS with a robust CI/CD pipeline:
-
-### Infrastructure
-
-- Frontend: AWS S3 + CloudFront
-- Backend: AWS EC2
-- Domain & SSL: Route 53 + ACM
-- CI/CD: GitHub Actions
-
-### Continuous Integration/Deployment
-
-The project uses GitHub Actions for automated deployment:
-
-- Automatic builds on push to main branch
+- Automatic builds on push to master branch
 - Separate workflows for frontend and backend
-- Automated testing before deployment
-- Zero-downtime deployment strategy
+
 
 ## Tech Stack
 
@@ -57,19 +44,13 @@ The project uses GitHub Actions for automated deployment:
 - Radix UI Components
 - Axios
 
-### DevOps
-
-- AWS (EC2, S3, CloudFront, Route 53)
-- GitHub Actions
-- Docker
-- Nginx
 
 ## Setup Instructions
 
 ### Prerequisites
 
 - Node.js (v18)
-- npm or yarn
+- npm 
 - Git
 
 ### Backend Setup
@@ -216,18 +197,18 @@ Query logs with filters.
 ## Design Decisions and Trade-offs
 
 1. **Storage Solution**
-
+   
    - Currently using file-based JSON storage for simplicity
    - Trade-off: Not suitable for high-volume production use
    - Future improvement: Implement database storage
 
-2. **Frontend Architecture**
+3. **Frontend Architecture**
 
    - Component-based structure with shared UI components
    - Custom hooks for data fetching and state management
    - Responsive design with TailwindCSS
 
-3. **API Design**
+4. **API Design**
    - RESTful endpoints with consistent response format
    - Comprehensive validation using Joi
    - Error handling middleware
@@ -236,7 +217,6 @@ Query logs with filters.
 
 - [x] Log ingestion with validation
 - [x] Multi-criteria log querying
-- [x] Real-time log viewing
 - [x] Beautiful UI with dark mode support
 - [x] Responsive design
 - [x] Type-safe implementation
@@ -272,56 +252,13 @@ The project uses TypeScript for both frontend and backend to ensure type safety 
 ### Backend Environment Variables
 
 ```env
-PORT=3000
+PORT=8001
 NODE_ENV=production
-API_URL=https://loglyzerapi.devsourav.online/api
-CORS_ORIGIN=https://loglyzer.devsourav.online
 ```
 
 ### Frontend Environment Variables
 
 ```env
-VITE_API_URL=https://loglyzerapi.devsourav.online/api
+VITE_API_URL="http://localhost:8001/api"
 ```
 
-## CI/CD Workflow
-
-The project uses GitHub Actions for automated deployment:
-
-### Frontend Deployment
-
-```yaml
-name: Frontend Deployment
-on:
-  push:
-    branches: [main]
-    paths:
-      - "Client/**"
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - Build React application
-      - Upload to S3
-      - Invalidate CloudFront cache
-```
-
-### Backend Deployment
-
-```yaml
-name: Backend Deployment
-on:
-  push:
-    branches: [main]
-    paths:
-      - "Server/**"
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - Build Node.js application
-      - Deploy to EC2
-      - Restart PM2 process
-```
