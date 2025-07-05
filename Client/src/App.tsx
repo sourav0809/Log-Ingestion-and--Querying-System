@@ -4,7 +4,7 @@ import FilterBar from "./components/filters/FilterBar";
 import { Button } from "./components/common/ui/button";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useLogs } from "./hooks/useLogs";
-import LogTable from "./components/logs/LogTable";
+import LogTable from "@/components/LogTable";
 import type { LogQueryParams } from "./types/log";
 
 const App: React.FC = () => {
