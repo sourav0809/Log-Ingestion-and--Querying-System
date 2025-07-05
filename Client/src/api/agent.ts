@@ -55,6 +55,7 @@ export const LogService = {
   async getLogs(params: LogQueryParams): Promise<ApiResponse<Log[]>> {
     try {
       // Clean up undefined values from params
+
       const cleanParams = Object.entries(params).reduce((acc, [key, value]) => {
         if (value !== undefined && value !== "") {
           acc[key] = value;

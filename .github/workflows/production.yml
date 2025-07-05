@@ -1,63 +1,58 @@
-name: CI/CD Pipeline
+name: LogLyzer Production Build
 
 on:
   push:
     branches: [main, master]
-  pull_request:
-    branches: [main, master]
+    paths:
+      - "Client/**" # Only trigger if files in Client/ change
+      - "Server/**" # Only trigger if files in Server/ change
 
 jobs:
   client-build:
     name: Client Build & Test
-    runs-on: ubuntu-latest
-    # Only run if files in Client/ folder changed
-    paths:
-      - "Client/**"
+    runs-on: [self-hosted, main]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: "19"
+          node-version: "20.x" # Recommended LTS version
           cache: "npm"
           cache-dependency-path: Client/package-lock.json
 
-      - name: Install Client Dependencies
+      - name: Install Dependencies (Client)
         working-directory: ./Client
         run: npm ci
 
-      - name: Lint Client
+      - name: Lint Client Code
         working-directory: ./Client
         run: npm run lint
 
-      - name: Type Check & Build Client
+      - name: Build Client
         working-directory: ./Client
         run: npm run build
 
   server-build:
     name: Server Build & Test
-    runs-on: ubuntu-latest
-    # Only run if files in Server/ folder changed
-    paths:
-      - "Server/**"
+    runs-on: [self-hosted, main]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: "19"
+          node-version: "20.x"
           cache: "npm"
           cache-dependency-path: Server/package-lock.json
 
-      - name: Install Server Dependencies
+      - name: Install Dependencies (Server)
         working-directory: ./Server
         run: npm ci
 
-      - name: Lint Server
+      - name: Lint Server Code
         working-directory: ./Server
         run: npm run lint
 
