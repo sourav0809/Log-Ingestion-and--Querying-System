@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { StorageManager } from "../utils/storage";
 import { LogSchema, LogQueryParams } from "../types/log";
 import catchAsync from "../utils/catchAsync";
 import { response } from "../utils/response";
 import httpStatus from "http-status";
+import { logService } from "../services/logService";
 
-export const createLog = catchAsync(async (req: Request, res: Response) => {
+const createLog = catchAsync(async (req: Request, res: Response) => {
   const validatedLog = LogSchema.parse(req.body);
-  await StorageManager.addLog(validatedLog);
+  await logService.addLog(validatedLog);
   return response(
     res,
     httpStatus.CREATED,
@@ -16,7 +16,7 @@ export const createLog = catchAsync(async (req: Request, res: Response) => {
   );
 });
 
-export const getLogs = catchAsync(async (req: Request, res: Response) => {
+const getLogs = catchAsync(async (req: Request, res: Response) => {
   const queryParams: LogQueryParams = {
     level: req.query.level as any,
     message: req.query.message as string,
@@ -28,6 +28,11 @@ export const getLogs = catchAsync(async (req: Request, res: Response) => {
     commit: req.query.commit as string,
   };
 
-  const logs = await StorageManager.queryLogs(queryParams);
+  const logs = await logService.queryLogs(queryParams);
   return response(res, httpStatus.OK, "Logs fetched successfully", logs);
 });
+
+export const logController = {
+  createLog,
+  getLogs,
+};
