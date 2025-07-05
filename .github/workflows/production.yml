@@ -28,7 +28,10 @@ jobs:
     if: needs.check-changes.outputs.client-changed == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code without cleaning .env
+        uses: actions/checkout@v4
+        with:
+          clean: false
 
       - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
@@ -62,7 +65,10 @@ jobs:
     if: needs.check-changes.outputs.server-changed == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code without cleaning .env
+        uses: actions/checkout@v4
+        with:
+          clean: false
 
       - name: Setup Node.js (LTS)
         uses: actions/setup-node@v4
