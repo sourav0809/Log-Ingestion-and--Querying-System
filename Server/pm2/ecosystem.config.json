@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "loglyzer-backend",
+      "script": "dist/index.js",
+      "watch": true,
+      "instances": "1",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": 8001
+      }
+    }
+  ]
+}

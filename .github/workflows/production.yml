@@ -63,3 +63,8 @@ jobs:
       - name: Build Server
         working-directory: ./Server
         run: npm run build
+        
+      - name: Restart Server using PM2
+      working-directory: ./Server
+      run: |
+        npx pm2 startOrReload pm2/ecosystem.config.json --env production
