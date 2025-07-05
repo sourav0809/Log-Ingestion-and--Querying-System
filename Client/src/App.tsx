@@ -1,80 +1,19 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { debounce } from "lodash";
-import type { DebouncedFunc } from "lodash";
-import FilterBar from "./components/FilterBar";
-import LogTable from "./components/LogTable";
-import { LogService } from "./api/agent";
-import type { Log, LogQueryParams } from "./types/log";
-import { Toaster } from "react-hot-toast";
+import React from "react";
+
+import FilterBar from "./components/filters/FilterBar";
+import AllLogs from "./components/logs/AllLogs";
+import type { LogQueryParams } from "./types/log";
 import { Moon, Sun, Activity } from "lucide-react";
 import { Button } from "@/components/common/ui/button";
+import { useDarkMode } from "./hooks/useDarkMode";
+import { useLogs } from "./hooks/useLogs";
 
 const App: React.FC = () => {
-  const [logs, setLogs] = useState<Log[]>([]);
-  const [filters, setFilters] = useState<LogQueryParams>({});
-  const [loading, setLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Create a memoized fetch function
-  const fetchLogs = useCallback(async (currentFilters: LogQueryParams) => {
-    setLoading(true);
-    try {
-      const response = await LogService.getLogs(currentFilters);
-      if (response.success && response.data) {
-        setLogs(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch logs:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Create a debounced version of fetchLogs with proper typing
-  const debouncedFetchLogs: DebouncedFunc<typeof fetchLogs> = useCallback(
-    debounce(fetchLogs, 700, {
-      leading: false,
-      trailing: true,
-      maxWait: 1000,
-    }),
-    [fetchLogs]
-  );
-
-  // Effect to trigger debounced fetch when filters change
-  useEffect(() => {
-    debouncedFetchLogs(filters);
-    return () => {
-      debouncedFetchLogs.cancel();
-    };
-  }, [filters, debouncedFetchLogs]);
-
-  useEffect(() => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setIsDarkMode(prefersDark);
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDarkMode);
-  }, [isDarkMode]);
+  const { logs, filters, setFilters, loading, refresh } = useLogs();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const handleFilterChange = (newFilters: LogQueryParams) => {
     setFilters(newFilters);
-  };
-
-  const handleRefresh = () => {
-    fetchLogs(filters);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
   };
 
   return (
@@ -123,15 +62,14 @@ const App: React.FC = () => {
             filters={filters}
             onFilterChange={handleFilterChange}
             isLoading={loading}
-            onRefresh={handleRefresh}
+            onRefresh={refresh}
           />
 
           <div className="rounded-lg">
-            <LogTable logs={logs} isLoading={loading} />
+            <AllLogs logs={logs} isLoading={loading} />
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

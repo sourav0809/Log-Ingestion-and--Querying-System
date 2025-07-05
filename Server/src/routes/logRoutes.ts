@@ -3,7 +3,7 @@ import { LogController } from "../controllers/logController";
 
 const router = Router();
 
-router.post("/logs", LogController.createLog);
-router.get("/logs", LogController.getLogs);
+router.post("/create", LogController.createLog);
+router.get("/get", LogController.getLogs);
 
 export default router;
