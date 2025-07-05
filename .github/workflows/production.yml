@@ -1,0 +1,70 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  client-build:
+    name: Client Build & Test
+    runs-on: ubuntu-latest
+    # Only run if files in Client/ folder changed
+    paths:
+      - "Client/**"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "19"
+          cache: "npm"
+          cache-dependency-path: Client/package-lock.json
+
+      - name: Install Client Dependencies
+        working-directory: ./Client
+        run: npm ci
+
+      - name: Lint Client
+        working-directory: ./Client
+        run: npm run lint
+
+      - name: Type Check & Build Client
+        working-directory: ./Client
+        run: npm run build
+
+  server-build:
+    name: Server Build & Test
+    runs-on: ubuntu-latest
+    # Only run if files in Server/ folder changed
+    paths:
+      - "Server/**"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "19"
+          cache: "npm"
+          cache-dependency-path: Server/package-lock.json
+
+      - name: Install Server Dependencies
+        working-directory: ./Server
+        run: npm ci
+
+      - name: Lint Server
+        working-directory: ./Server
+        run: npm run lint
+
+      - name: Type Check Server
+        working-directory: ./Server
+        run: npm run ts.check
+
+      - name: Build Server
+        working-directory: ./Server
+        run: npm run build
