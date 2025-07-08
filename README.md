@@ -57,32 +57,77 @@ Loglyzer is a robust log management system that allows you to:
 
 ### Environment Variables
 
+Before starting the application, you need to set up environment variables for both backend and frontend.
+
 #### Backend (.env)
+
+Create a `.env` file in the `Server` directory:
 
 ```env
 PORT=8001
-NODE_ENV=production
+NODE_ENV=development
 ```
 
 #### Frontend (.env)
+
+Create a `.env` file in the `Client` directory:
 
 ```env
 VITE_API_URL="http://localhost:8001/api"
 ```
 
-### Installation
+### Installation & Development Setup
 
-1. Clone the repository
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/sourav0809/Log-Ingestion-and-Querying-System.git
+   ```
+
 2. Setup Backend:
+
    ```bash
+   # Navigate to Server directory
    cd Server
+
+   # Install dependencies
    npm install
+
+   # Create .env file (as shown above)
+   cp .env.example .env  # if .env.example exists, or create manually
+
+   # Start development server
+   npm run dev
    ```
+
+   The backend server will be running at: `http://localhost:8001`
+
 3. Setup Frontend:
+
    ```bash
+   # Navigate to Client directory
    cd Client
+
+   # Install dependencies
    npm install
+
+   # Create .env file (as shown above)
+   cp .env.example .env  # if .env.example exists, or create manually
+
+   # Start development server
+   npm run dev
    ```
+
+   The frontend application will be running at: `http://localhost:5173`
+
+### Accessing the Application
+
+Once both servers are running, you can access:
+
+- Frontend: [http://localhost:5173](http://localhost:5173)
+- Backend API: [http://localhost:8001/api](http://localhost:8001/api)
+
+> Note: Make sure both backend and frontend servers are running simultaneously for the application to work properly.
 
 ## API Reference
 

@@ -70,27 +70,28 @@ export const getLogLevelStyle = (level: string) => {
     case "error":
       return {
         variant: "destructive" as const,
-        className: "bg-red-500/15 text-red-500 hover:bg-red-500/25 text-white",
+        className:
+          "bg-red-500 text-red-500 hover:bg-red-700 text-white text-xs",
       };
     case "warn":
       return {
         variant: "default" as const,
-        className: "bg-yellow-500/15 text-yellow-500 hover:bg-yellow-500/25",
+        className: "bg-yellow-500 text-white hover:bg-yellow-800 text-xs",
       };
     case "info":
       return {
         variant: "default" as const,
-        className: "bg-blue-500/15 text-blue-500 hover:bg-blue-500/25",
+        className: "bg-blue-500 text-white hover:bg-blue-800 text-xs",
       };
     case "debug":
       return {
         variant: "default" as const,
-        className: "bg-purple-500/15 text-purple-500 hover:bg-purple-500/25",
+        className: "bg-purple-500 text-white hover:bg-purple-800 text-xs",
       };
     default:
       return {
         variant: "secondary" as const,
-        className: "",
+        className: " text-xs",
       };
   }
 };

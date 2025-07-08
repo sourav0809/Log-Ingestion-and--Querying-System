@@ -67,10 +67,7 @@ const LogTable: React.FC<LogTableProps> = ({ logs, isLoading }) => {
                   className="border-b transition-colors hover:bg-muted/50"
                 >
                   <TableCell className="font-medium py-3">
-                    <Badge
-                      {...getLogLevelStyle(log.level)}
-                      className="text-xs font-medium"
-                    >
+                    <Badge {...getLogLevelStyle(log.level)}>
                       {log.level.toUpperCase()}
                     </Badge>
                   </TableCell>
