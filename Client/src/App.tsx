@@ -26,7 +26,7 @@ const App: React.FC = () => {
             <div>
               <h1 className="text-xl font-semibold tracking-tight">Loglyzer</h1>
               <p className="text-sm text-muted-foreground">
-                View and filter system logs in real-time
+                View and filter system logs
               </p>
             </div>
           </div>
